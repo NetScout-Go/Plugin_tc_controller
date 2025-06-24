@@ -1,93 +1,115 @@
 {
-  "id": "tc_controller",
-  "name": "Traffic Control (QoS)",
+  "author": "NetScout-Go",
+  "category": "Performance",
   "description": "Simulate network conditions and test Quality of Service using Linux Traffic Control (tc)",
   "icon": "tune",
-  "category": "Performance",
+  "id": "tc_controller",
+  "license": "MIT",
+  "name": "Traffic Control (QoS)",
   "parameters": [
     {
+      "default": "eth0",
+      "description": "Network interface to apply traffic control rules",
       "id": "interface",
       "name": "Network Interface",
-      "description": "Network interface to apply traffic control rules",
-      "type": "string",
       "required": true,
-      "default": "eth0"
+      "type": "string"
     },
     {
+      "default": "bandwidth",
+      "description": "Traffic control mode",
       "id": "mode",
       "name": "Mode",
-      "description": "Traffic control mode",
-      "type": "select",
-      "required": true,
-      "default": "bandwidth",
       "options": [
-        {"value": "bandwidth", "label": "Bandwidth Limit"},
-        {"value": "latency", "label": "Latency"},
-        {"value": "packet_loss", "label": "Packet Loss"},
-        {"value": "jitter", "label": "Jitter"},
-        {"value": "combination", "label": "Combined Conditions"},
-        {"value": "reset", "label": "Reset All Rules"}
-      ]
+        {
+          "label": "Bandwidth Limit",
+          "value": "bandwidth"
+        },
+        {
+          "label": "Latency",
+          "value": "latency"
+        },
+        {
+          "label": "Packet Loss",
+          "value": "packet_loss"
+        },
+        {
+          "label": "Jitter",
+          "value": "jitter"
+        },
+        {
+          "label": "Combined Conditions",
+          "value": "combination"
+        },
+        {
+          "label": "Reset All Rules",
+          "value": "reset"
+        }
+      ],
+      "required": true,
+      "type": "select"
     },
     {
-      "id": "bandwidth",
-      "name": "Bandwidth Limit (Kbps)",
-      "description": "Maximum bandwidth in Kbps (1000 = 1Mbps)",
-      "type": "number",
-      "required": false,
+      "condition": "mode=='bandwidth' || mode=='combination'",
       "default": 1000,
-      "min": 32,
+      "description": "Maximum bandwidth in Kbps (1000 = 1Mbps)",
+      "id": "bandwidth",
       "max": 1000000,
+      "min": 32,
+      "name": "Bandwidth Limit (Kbps)",
+      "required": false,
       "step": 32,
-      "condition": "mode=='bandwidth' || mode=='combination'"
+      "type": "number"
     },
     {
-      "id": "latency",
-      "name": "Latency (ms)",
-      "description": "Added latency in milliseconds",
-      "type": "number",
-      "required": false,
+      "condition": "mode=='latency' || mode=='combination'",
       "default": 100,
-      "min": 1,
+      "description": "Added latency in milliseconds",
+      "id": "latency",
       "max": 5000,
-      "step": 1,
-      "condition": "mode=='latency' || mode=='combination'"
-    },
-    {
-      "id": "packet_loss",
-      "name": "Packet Loss (%)",
-      "description": "Percentage of packets to drop",
-      "type": "number",
-      "required": false,
-      "default": 1,
-      "min": 0.1,
-      "max": 100,
-      "step": 0.1,
-      "condition": "mode=='packet_loss' || mode=='combination'"
-    },
-    {
-      "id": "jitter",
-      "name": "Jitter (ms)",
-      "description": "Latency variation in milliseconds",
-      "type": "number",
-      "required": false,
-      "default": 20,
       "min": 1,
-      "max": 1000,
+      "name": "Latency (ms)",
+      "required": false,
       "step": 1,
-      "condition": "mode=='jitter' || mode=='combination'"
+      "type": "number"
     },
     {
-      "id": "duration",
-      "name": "Duration (seconds)",
-      "description": "Duration to apply traffic control rules (0 for indefinite)",
-      "type": "number",
+      "condition": "mode=='packet_loss' || mode=='combination'",
+      "default": 1,
+      "description": "Percentage of packets to drop",
+      "id": "packet_loss",
+      "max": 100,
+      "min": 0.1,
+      "name": "Packet Loss (%)",
       "required": false,
-      "default": 60,
-      "min": 0,
-      "max": 3600,
+      "step": 0.1,
+      "type": "number"
+    },
+    {
+      "condition": "mode=='jitter' || mode=='combination'",
+      "default": 20,
+      "description": "Latency variation in milliseconds",
+      "id": "jitter",
+      "max": 1000,
+      "min": 1,
+      "name": "Jitter (ms)",
+      "required": false,
       "step": 1,
-      "condition": "mode!='reset'"
+      "type": "number"
+    },
+    {
+      "condition": "mode!='reset'",
+      "default": 60,
+      "description": "Duration to apply traffic control rules (0 for indefinite)",
+      "id": "duration",
+      "max": 3600,
+      "min": 0,
+      "name": "Duration (seconds)",
+      "required": false,
+      "step": 1,
+      "type": "number"
     }
-  ]
+  ],
+  "repository": "https://github.com/NetScout-Go/Plugin_tc_controller",
+  "version": "1.0.0"
 }
